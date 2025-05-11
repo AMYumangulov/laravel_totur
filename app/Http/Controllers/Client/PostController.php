@@ -4,17 +4,14 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\Comment\IndexRequest;
+use App\Http\Requests\Client\Post\RepostRequest;
 use App\Http\Requests\Client\Post\StoreCommentRequest;
 use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Post\PostVueResource;
 use App\Jobs\Comment\ToggleLikeSendMailJod;
-use App\Mail\Comment\StoredCommentMail;
-use App\Mail\Like\ToggleLikeMail;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Services\CommentService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -97,4 +94,14 @@ class PostController extends Controller
     {
         return $post->comments->count();
     }
+
+    public function repost(Post $post, RepostRequest $request)
+    {
+        $data = $request->validationData();
+        $post = $post->repostPosts()->create($data);
+
+        return PostVueResource::make($post)->resolve();
+    }
+
+
 }

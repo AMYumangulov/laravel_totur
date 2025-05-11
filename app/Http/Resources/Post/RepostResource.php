@@ -7,7 +7,7 @@ use App\Http\Resources\Profile\ProfileResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostVueResource extends JsonResource
+class RepostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -28,7 +28,6 @@ class PostVueResource extends JsonResource
             'is_liked' => $this->is_liked,
             'liked_by_profiles_count' => $this->liked_by_profiles_count,
             'comment_count' => $this->comment_count,
-            'reposted_post' => $this->repostedPost ? RepostResource::make($this->repostedPost)->resolve():null,
 
         ];
     }

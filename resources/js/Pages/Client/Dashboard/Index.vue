@@ -5,7 +5,9 @@
                       v-for="post in postsData"
                       :post="post"
                       :profile="$attrs.auth.user.profile"
-                      @like_toggled="toggleLike">
+                      @like_toggled="toggleLike"
+                      @get_post="getposts"
+            >
             </PostItem>
         </div>
     </div>
@@ -37,6 +39,7 @@ export default {
         toggleLike(postId) {
             axios.post(route('posts.likes.toggle', postId))
                 .then(res => {
+                    console.log(res);
                     this.getposts();
                 })
         },

@@ -1,4 +1,7 @@
 <template>
+    <RepostItem v-if="isRepost"
+                :post="post"
+                @is-repost="isRepost=false"/>
     <div>
         <div class="mb-4 w-1/2 mx-auto">
             <div class="mb-4 bg-white p-4 border border-gray-200">
@@ -7,14 +10,27 @@
                     <img class="mb-4 w-full object-cover" v-if="post.image_url" :src="post.image_url" :alt="post.title">
                     <p class="mb-4 text-gray-700" v-if="post.content">{{ post.content }}</p>
                     <div class="flex justify-end items-center">
-                        <span v-if="post.liked_by_profiles_count > 0" class="mr-1">
+                        <div class="mr-4">
+                            <svg @click="isRepost = true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.5"
+                                 stroke="currentColor" class="cursor-pointer size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"/>
+                            </svg>
+
+                        </div>
+                        <div class="flex">
+                            <span v-if="post.liked_by_profiles_count > 0" class="mr-1">
                             {{ post.liked_by_profiles_count }}</span>
-                        <svg @click="toggleLike" xmlns="http://www.w3.org/2000/svg"
-                             :fill="post.is_liked ? 'red' : 'none'" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="cursor-pointer size-6 text-red-500">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
-                        </svg>
+                            <svg @click="toggleLike" xmlns="http://www.w3.org/2000/svg"
+                                 :fill="post.is_liked ? 'red' : 'none'" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="cursor-pointer size-6 text-red-500">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                            </svg>
+                        </div>
+
                     </div>
                     <div class="text-sm text-gray-500 mt-2"> Опубликовано: {{ post.published_at }}</div>
                 </div>
@@ -75,6 +91,7 @@
                     <div v-else class="text-gray-500"> Комментариев пока нет. Будьте первым!
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -83,6 +100,7 @@
 <script>
 import ClientLayout from "@/Layouts/ClientLayout.vue";
 import CommentItem from "@/Components/Post/CommentItem.vue";
+import RepostItem from "@/Components/Post/RepostItem.vue";
 
 export default {
     name: "ShowPost",
@@ -94,7 +112,8 @@ export default {
     layout: ClientLayout,
 
     components: {
-        CommentItem
+        CommentItem,
+        RepostItem
     },
 
     data() {
@@ -103,13 +122,14 @@ export default {
             showComments: false,
             comments: Object,
             comments_meta: Object,
-            filter: {page: 1}
+            filter: {page: 1},
+            isRepost: false,
         }
     },
 
 
     methods: {
-        showCommentsMethod(){
+        showCommentsMethod() {
             this.indexComments();
             this.showComments = !this.showComments
 
@@ -154,6 +174,7 @@ export default {
 
             axios.post(route('posts.comments.store', this.post.id), commentData)
                 .then(res => {
+                    console.log(res);
                     this.newCommentContent = '';
                     this.indexComments();
                 })
@@ -175,7 +196,8 @@ export default {
                     console.error("Ошибка при загрузке комментариев:", error);
                     this.comments = [];
                 });
-        }
+        },
+
 
     },
     watch: {
@@ -189,5 +211,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
 </style>

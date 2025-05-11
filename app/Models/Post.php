@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,7 +24,7 @@ class Post extends Model
     use HasLog, Loggable;
     use HasFilter;
 
-    protected $withCount = ['likedByProfiles'];
+    protected $withCount = ['likedByProfiles', 'comments'];
 
     protected static function booted(): void
     {
@@ -76,6 +74,16 @@ class Post extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class)->where('parent_id', '=', null)->latest();
+    }
+
+    public function repostedPost(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'parent_id');
+    }
+
+    public function repostPosts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'parent_id');
     }
 
     public function image(): MorphOne

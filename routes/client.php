@@ -15,7 +15,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('posts/{post}/comment', [PostController::class, 'indexComment'])->name('posts.comments.index');
     Route::get('posts/{comment}/childComment', [PostController::class, 'childComment'])->name('posts.comments.child');
     Route::get('posts/{post}/countComment', [PostController::class, 'countComment'])->name('posts.comments.count');
+    Route::post('posts/{post}/repost', [PostController::class, 'repost'])->name('post.repost');
 
     Route::post('comments/{comment}/toggle-like', [PostController::class, 'toggleLikeComment'])->name('comments.likes.toggle');
     Route::get('comments/{comment}', [PostController::class, 'showComment'])->name('comments.show');
+
 });
