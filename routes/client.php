@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Client\ChatController;
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\PostController;
+use App\Http\Controllers\Client\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth']], function () {
@@ -19,5 +21,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('comments/{comment}/toggle-like', [PostController::class, 'toggleLikeComment'])->name('comments.likes.toggle');
     Route::get('comments/{comment}', [PostController::class, 'showComment'])->name('comments.show');
+
+    Route::get('profiles/{profile}', [ProfileController::class, 'show'])->name('profiles.show');
+    Route::post('chats', [ChatController::class, 'store'])->name('chats.store');
+    Route::post('chats/{chat}/messages', [ChatController::class, 'storeMessage'])->name('chats.messages.store');
+    Route::get('chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
+
 
 });
