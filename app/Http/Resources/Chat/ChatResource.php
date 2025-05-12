@@ -18,7 +18,7 @@ class ChatResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'messages' => MessageResource::collection($this->messages)->resolve(),
+//            'messages' => MessageResource::collection($this->messages)->resolve(),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\Chat\IndexRequest;
 use App\Http\Requests\Client\Chat\StoreMessageRequest;
 use App\Http\Requests\Client\Chat\StoreRequest;
 use App\Http\Resources\Chat\ChatResource;
@@ -22,7 +23,7 @@ class ChatController extends Controller
         return to_route('chats.show', $chat->id);
     }
 
-    public function storeMessage(StoreMessageRequest $request,Chat $chat)
+    public function storeMessage(StoreMessageRequest $request, Chat $chat)
     {
         $data = $request->validationData();
 
@@ -35,5 +36,20 @@ class ChatController extends Controller
 
         return inertia('Client/Chat/Show', compact('chat'));
     }
+
+    public function indexMessage(IndexRequest $request, Chat $chat)
+    {
+        $data = $request->validationData();
+
+        $messages = $chat->messages()->latest()->paginate($data['per_page'],
+            '*',
+            'page',
+            $data['page']);
+
+        $messages = MessageResource::collection($messages);
+
+        return $messages;
+    }
+
 
 }

@@ -5,7 +5,8 @@
             <div class="mb-4 bg-white p-4 border border-gray-200">
                 {{ profile.name }}
             </div>
-            <div class="mb-4 bg-white p-4 border border-gray-200">
+
+            <div v-if="profile.id !== authProfile.id" class="mb-4 bg-white p-4 border border-gray-200">
                 <Link method="post"
                       :href="route('chats.store')"
                       :data="{profile_id:profile.id}">
@@ -21,11 +22,12 @@ import ClientLayout from "@/Layouts/ClientLayout.vue";
 import {Link} from "@inertiajs/vue3";
 
 export default {
-    name: "ShowPost",
+    name: "ShowProfile",
     layout: ClientLayout,
 
     props: {
         profile: Object,
+        authProfile:Object,
     },
 
     components: {

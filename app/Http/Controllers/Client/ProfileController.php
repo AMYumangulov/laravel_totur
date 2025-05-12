@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        $profiles = ProfileResource::collection(Profile::all()->
+        where('id', '!=', auth()->user()->profile->id))->
+        resolve();
+
+        return inertia('Client/Profile/Index', compact('profiles'));
+    }
+
     public function show(Profile $profile)
     {
         $profile = ProfileResource::make($profile)->resolve();
-        return inertia('Client/Profile/Show', compact('profile'));
+        $authProfile = auth()->user()->profile;
+        return inertia('Client/Profile/Show', compact('profile', 'authProfile'));
     }
 }

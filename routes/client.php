@@ -23,8 +23,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('comments/{comment}', [PostController::class, 'showComment'])->name('comments.show');
 
     Route::get('profiles/{profile}', [ProfileController::class, 'show'])->name('profiles.show');
+    Route::get('profiles', [ProfileController::class, 'index'])->name('profiles.index');
     Route::post('chats', [ChatController::class, 'store'])->name('chats.store');
     Route::post('chats/{chat}/messages', [ChatController::class, 'storeMessage'])->name('chats.messages.store');
+    Route::get('chats/{chat}/messages', [ChatController::class, 'indexMessage'])->name('chats.messages.index');
     Route::get('chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
 
 

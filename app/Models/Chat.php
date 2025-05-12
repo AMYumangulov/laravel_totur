@@ -12,6 +12,7 @@ class Chat extends Model
     {
         return $this->belongsToMany(Profile::class);
     }
+
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
