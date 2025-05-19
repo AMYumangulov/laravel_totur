@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Client\Chat;
+namespace App\Http\Requests\Client\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class ToggleSubscriberRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,7 +14,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_ids' => 'required|integer|exists:profiles,id'
+            'subscriber_id'=> 'required|integer|exists:profiles,id'
         ];
     }
 }

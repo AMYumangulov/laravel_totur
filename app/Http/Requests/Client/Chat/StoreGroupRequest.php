@@ -4,7 +4,7 @@ namespace App\Http\Requests\Client\Chat;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class StoreGroupRequest extends FormRequest
 {
 
     /**
@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_ids' => 'required|integer|exists:profiles,id'
+            'profile_ids' => 'required|array'
         ];
     }
 }

@@ -24,7 +24,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('profiles/{profile}', [ProfileController::class, 'show'])->name('profiles.show');
     Route::get('profiles', [ProfileController::class, 'index'])->name('profiles.index');
+    Route::post('/profiles/{profile}/toggle-subscriber', [ProfileController::class, 'toggleSubscriber'])->name('profiles.subscribers.toggle');
+
+
     Route::post('chats', [ChatController::class, 'store'])->name('chats.store');
+    Route::post('chatsGroup', [ChatController::class, 'storeGroup'])->name('chats.groupStore');
     Route::post('chats/{chat}/messages', [ChatController::class, 'storeMessage'])->name('chats.messages.store');
     Route::get('chats/{chat}/messages', [ChatController::class, 'indexMessage'])->name('chats.messages.index');
     Route::get('chats/{chat}', [ChatController::class, 'show'])->name('chats.show');

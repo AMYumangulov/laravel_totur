@@ -13,7 +13,8 @@
                        class="inline-block px-3 py-2 bg-cyan-700 text-white border bg-cyan-800">Еще</a>
                 </div>
 
-                <div v-for="message in messages.data" class="mb-4 pb-4 border-b border-gray-200">
+                <div v-for="message in messages.data.toReversed()"
+                     :class="[message.is_self ? 'text-right':'' ,'mb-4 pb-4 border-b border-gray-200']">
                     {{ message.id }}
                     {{ message.content }}
                 </div>
@@ -66,7 +67,7 @@ export default {
         storeMessage() {
             axios.post(route('chats.messages.store', this.chat.id), this.message)
                 .then(res => {
-                    this.messages.data.push(res.data);
+                    this.messages.data.unshift(res.data);
                     this.message = {};
 
                 })
@@ -81,7 +82,7 @@ export default {
                 .then(res => {
                     console.log(res.data);
 
-                    this.messages.data.unshift(...res.data.data);
+                    this.messages.data.push(...res.data.data);
                     this.page++;
 
                 })

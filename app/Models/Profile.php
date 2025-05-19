@@ -19,28 +19,28 @@ class Profile extends Model
     use SoftDeletes;
     use HasLog, Loggable;
 
-    protected static function booted():void
+    protected static function booted(): void
     {
-        static::created(function (Profile $profile){
+        static::created(function (Profile $profile) {
             Log::create(['model_name' => 'профиля',
                 'event_name' => 'tesst',
                 'old_attribute' => 'tesst',
-                'new_attribute' =>  'tesst'
+                'new_attribute' => 'tesst'
             ]);
         });
     }
 
-    public function user():BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function likedPosts():MorphToMany
+    public function likedPosts(): MorphToMany
     {
         return $this->morphedByMany(Post::class, 'likeable');
     }
 
-    public function likedComments():MorphToMany
+    public function likedComments(): MorphToMany
     {
         return $this->morphedByMany(Comment::class, 'likeable');
     }
@@ -48,6 +48,21 @@ class Profile extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function subscribers(): BelongsToMany
+    {
+        return $this->belongsToMany(Profile::class, 'profile_subscriber', 'profile_id', 'subscriber_id');
+    }
+
+    public function subscribings(): BelongsToMany
+    {
+        return $this->belongsToMany(Profile::class, 'profile_subscriber', 'subscriber_id', 'profile_id');
+    }
+
+    public function getIsSubscriberAttribute(): bool
+    {
+        return $this->subscribings->contains(auth()->user()->profile->id);
     }
 
 

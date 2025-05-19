@@ -13,6 +13,15 @@
                     Написать
                 </Link>
             </div>
+            <div>
+                <input type="checkbox" id="checkbox" :value="profile.id" v-model="checkedNames"/>
+            </div>
+        </div>
+        <div class="flex justify-between mb-4  w-1/2 mx-auto" v-if="checkedNames.length > 3">
+            <Link method="post" :href="route('chats.groupStore')"
+                  :data="{profile_ids:checkedNames}">
+                Создать групповой чат
+            </Link>
         </div>
     </div>
 </template>
@@ -33,14 +42,17 @@ export default {
 
     data() {
         return {
-            profilesData: this.posts
+            profilesData: this.posts,
+            checkedNames: [],
         }
     },
     components: {
         Link
     },
 
-    methods: {}
+    methods: {logCheckedNames() {
+            console.log('Массив checkedNames перед отправкой:', this.checkedNames);
+        },}
 }
 </script>
 

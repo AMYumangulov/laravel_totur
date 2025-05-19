@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\Chat\IndexRequest;
+use App\Http\Requests\Client\Chat\StoreGroupRequest;
 use App\Http\Requests\Client\Chat\StoreMessageRequest;
 use App\Http\Requests\Client\Chat\StoreRequest;
 use App\Http\Resources\Chat\ChatResource;
@@ -19,6 +20,15 @@ class ChatController extends Controller
         $data = $request->validated();
 
         $chat = ChatService::store($data);
+
+        return to_route('chats.show', $chat->id);
+    }
+
+    public function storeGroup(StoreGroupRequest $request)
+    {
+        $data = $request->validated();
+
+        $chat = ChatService::storeGroup($data);
 
         return to_route('chats.show', $chat->id);
     }

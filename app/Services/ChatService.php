@@ -29,4 +29,14 @@ class ChatService
         return $chat;
 
     }
+
+    public static function storeGroup(array $data): Chat
+    {
+        $chat = Chat::create();
+        $chat->profiles()->attach($data['profile_ids']);
+        $chat->profiles()->attach(auth()->user()->profile->id);
+
+        return $chat;
+
+    }
 }
